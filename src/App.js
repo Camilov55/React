@@ -15,6 +15,8 @@ import { CreateTodoButton } from './CreateTodoButton';
 // localStorange.setItem('TODOS_V1' JSON.stringify(defaultTodos));  --> Agregar los datos en el almacenamiento
 // localStorange.removeItem('TODO_V1');  --> Elimina lo que se guarde en el almacenamiento 
 
+
+// la function useLocarStorage es un un Custom Hooks
 function useLocalStorage(itemName, initialValue) {
 
   const localStorageItem = localStorage.getItem(itemName, JSON.stringify(initialValue));
@@ -33,9 +35,9 @@ function useLocalStorage(itemName, initialValue) {
 
   const saveItem = (newItem) => {
     localStorage.setItem('TODO_V1', JSON.stringify(newItem));
-    setItem(newItem);
+     setItem(newItem);
   };
-  return {};
+  return [item, saveItem];
 }
 
 
@@ -45,7 +47,7 @@ function App() {
   //const [todos, setTodos] = React.useState(defaultTodos);
   const [searchValue, setSearchValue] = React.useState('');
 
-  const completedTodos = todos.filter(todo => !!todo.completed).length;
+  const completedTodos = todos.filter((todo) => !!todo.completed).length;
   const totalTodos = todos.length;
 
   const searchedTodos = todos.filter((todo) => {
@@ -54,8 +56,6 @@ function App() {
     return todoText.includes(searchText)
   }
 );
-
-  
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
