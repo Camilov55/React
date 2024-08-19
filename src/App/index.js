@@ -5,7 +5,13 @@ import { useLocalStorage } from './useLocalStorage';
 
 function App() {
 
-  const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
+  const {
+    item: todos, // Se llamo a item. Para no cambiar el nombre a todos los 'todos' tambien se renombraron a item
+    saveItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage('TODOS_V1', []);
+
   //const [todos, setTodos] = React.useState(defaultTodos);
   const [searchValue, setSearchValue] = React.useState('');
 
@@ -13,22 +19,18 @@ function App() {
   const totalTodos = todos.length;
 
 
-  //
-  console.log('Log 1');
-
+  // Efectos, nos permiten ejecutar cierta parte del código de nuestros componentes para que no se ejecuten cada vez que hacemos render de nuestro componente
+  //console.log('Log 1');
   /* React.useEffect(() => {
     console.log('Loooooog 2')
   }); */
-
   /* React.useEffect(() => { // hace que el estado se ejecute una sola vez por el array vacio
     console.log('Loooooog 2')
   }, [] ); */
-
-  React.useEffect(() => { // Hace que se ejecute esta parte del codigo solo cuando se ejecuta el estado totalTodos
+  /* React.useEffect(() => { // Hace que se ejecute esta parte del codigo solo cuando se ejecuta el estado totalTodos
     console.log('Loooooog 2')
   }, [totalTodos] );
-
-  console.log('Log 3');
+  console.log('Log 3'); */
 
 
   const searchedTodos = todos.filter((todo) => {
@@ -54,6 +56,8 @@ function App() {
 
   return (
     <AppUI 
+      loading={loading}
+      error={error}
       completedTodos={completedTodos}
       totalTodos={totalTodos}
       searchedTodos={searchedTodos}

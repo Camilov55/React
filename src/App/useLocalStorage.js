@@ -13,25 +13,45 @@ import React from "react";
 // la function useLocarStorage es un un Custom Hooks
 function useLocalStorage(itemName, initialValue) {
 
-    const localStorageItem = localStorage.getItem(itemName, JSON.stringify(initialValue));
-  
-    let parsedItem;
-  
-    if(!localStorageItem) {
-      localStorage.setItem(itemName, JSON.stringify([]));
-      parsedItem = [];
-    } 
-    else {
-      parsedItem = JSON.parse(localStorageItem);
-    }
-  
-    const [item, setItem] = React.useState(parsedItem);
-  
-    const saveItem = (newItem) => {
-      localStorage.setItem('TODO_V1', JSON.stringify(newItem));
-       setItem(newItem);
-    };
-    return [item, saveItem];
-  }
+  const [item, setItem] = React.useState(initialValue);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(false);
 
-  export { useLocalStorage };
+  React.useEffect(() => {
+    
+    try{
+      const localStorageItem = localStorage.getItem(itemName, JSON.stringify(initialValue));
+
+      let parsedItem;
+
+      if(!localStorageItem) {
+        localStorage.setItem(itemName, JSON.stringify([]));
+        parsedItem = [];
+      } 
+      else {
+        parsedItem = JSON.parse(localStorageItem);
+        setItem(parsedItem);
+      }
+
+      setLoading(false);
+    }
+    catch(error){
+      setLoading(false);
+      setError(true);
+    }
+  }, []);
+
+
+  const saveItem = (newItem) => {
+    localStorage.setItem('TODO_V1', JSON.stringify(newItem));
+      setItem(newItem);
+  };
+  return {
+    item, 
+    saveItem, 
+    loading, 
+    error,
+  };
+}
+
+export { useLocalStorage };
