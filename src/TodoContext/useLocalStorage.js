@@ -21,13 +21,13 @@ function useLocalStorage(itemName, initialValue) {
     
     setTimeout(() => {
       try{
-        const localStorageItem = localStorage.getItem(itemName, JSON.stringify(initialValue));
+        const localStorageItem = localStorage.getItem(itemName);
   
         let parsedItem;
   
         if(!localStorageItem) {
-          localStorage.setItem(itemName, JSON.stringify([]));
-          parsedItem = [];
+          localStorage.setItem(itemName, JSON.stringify(initialValue));
+          parsedItem = initialValue;
         } 
         else {
           parsedItem = JSON.parse(localStorageItem);
@@ -35,18 +35,15 @@ function useLocalStorage(itemName, initialValue) {
         }
   
         setLoading(false);
-      }
-      catch(error){
+      } catch(error) {
         setLoading(false);
         setError(true);
       }
     }, 2000);
-    
-  }, []);
-
+  });
 
   const saveItem = (newItem) => {
-    localStorage.setItem('TODO_V1', JSON.stringify(newItem));
+    localStorage.setItem(itemName, JSON.stringify(newItem));
       setItem(newItem);
   };
   return {

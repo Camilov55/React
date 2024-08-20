@@ -38,6 +38,7 @@ function AppUI() {
                 )}
                 {error && <TodosError />}
                 {(!loading && searchedTodos.length === 0) && <EmptyTodos />}
+                
                 {searchedTodos.map(todo => (
                     <TodoItem 
                         key={todo.text} 
